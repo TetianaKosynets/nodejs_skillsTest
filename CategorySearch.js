@@ -1,5 +1,4 @@
 const prompt = require('prompt');
-
 const request = require('request');
 
 prompt.start();
@@ -13,32 +12,18 @@ prompt.get(['Category', 'Limit'], function (err, result) {
         if (!error && response.statusCode == 200) {
           var json = JSON.parse(body);
           var entries = json.entries;
-          var entriesSorted = entries.sort((a, b) => a.API.normalize().localeCompare(b.API.normalize()));
-          var list = [];
           var allCategories = [];
-          entriesSorted.forEach(element => {
-              var apis = element.API;
-              list.push(apis);
-           
+          entries.forEach(element => {
               if (element.Category === result.Category)
-              allCategories.push(element.Category);
+                allCategories.push(element.Category);
           });
 
           var limit = allCategories.length;
-          
-          var i = list.length-1;
-          var sortedList = [];
-          while (i > 0) {
-              sortedList.push(list[i]);
-              i--;
-            }
-          console.log(limit);
+
+          if (limit > 0)
+             console.log(allCategories[0],limit); 
+           else
+             console.log("No results");   
         }
-
-        
-
-      });
-
-      
-    
+      });    
 });
